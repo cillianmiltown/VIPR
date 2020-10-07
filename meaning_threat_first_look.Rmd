@@ -1,0 +1,410 @@
+---
+title             : "Meaning Threat and Moral Dumbfounding"
+shorttitle        : "Meaning Threat and Moral Dumbfounding"
+author: 
+  - name          : "Cillian McHugh"
+    affiliation   : "1"
+  - name          : "Alanna Heraty"
+    affiliation   : "1"
+  - name          : "Orla Regan"
+    affiliation   : "1"
+  - name          : "Jade Gill"
+    affiliation   : "1"
+  - name          : "Asma Bibi Jehan"
+    affiliation   : "1"
+  - name          : "Sarah Doherty"
+    affiliation   : "1,2"
+    
+        
+affiliation:
+  - id            : "1"
+    institution   : "University of Limerick"
+  - id            : "2"
+    institution   : "VIP-R"    
+author_note: >
+  All procedures performed in studies involving human participants were approved by institutional research ethics committee and conducted in accordance with the Code of Professional Ethics of the Psychological Society of Ireland, and with the 1964 Helsinki declaration and its later amendments or comparable ethical standards.  Informed consent was obtained from all individual participants included in the study.  The authors declare that there are no potential conflicts of interest with respect to the research, authorship, and/or publication of this article.  All authors consented to the submission of this manuscript. 
+abstract: > 
+  [Abstract goes here]
+  
+  
+keywords          : "keywords"
+wordcount         : "wordcount"
+bibliography: "../resources/bib/My Library.bib"
+figsintext        : yes
+figurelist        : yes
+tablelist         : yes
+footnotelist      : no
+lineno            : no
+class             : "man"
+output            : papaja::apa6_pdf
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+knitr::opts_chunk$set(include = FALSE)
+```
+
+```{r loadlibraries}
+
+library(foreign)
+library(papaja)
+library(haven)
+library(dplyr)
+library(data.table)
+library(reshape2)
+library(desnum)
+library(tidyverse)
+library(afex)
+
+
+
+```
+
+```{r loaddata}
+#setwd("categorisation_project")
+#source("set_up_meaning_threat.R")
+
+rm(list=ls())
+load("meaning_threat.RData")
+
+```
+
+# Study 1
+## Background
+The aim of Study 1 was to replicate the *uncertainty threat* finding by @vandenbos_enquiry_2005. Participants completed a task that either poses an uncertainty threat (or does not – control). Following this participants read a hypothetical article about University of Limerick. This article was either positive or negative. We hypothesised that the participants in the uncertainty threat condition will display more “worldview defense” in response to the negative article than the participants in the control condition.
+
+## Design:
+2x2 Factorial design. IV1 is “salience” with 2 levels: uncertainty vs television. IV2 is article type with two levels: positive and negative. Primary Dependent variable is “worldview defense” however measures of Anger and Sadness were taken. Need for Closure and Self-esteem were additionally measured as potential moderator variables (not investigated in this first look document).
+
+```{r study1}
+
+df3 <- df1
+
+df3$InCS <- df3$InCs
+df3$gender <- df3$Q157
+df3$age <- as.numeric(df3$Q158)
+
+df3$Salience <- recode(df3$condition1, "threat"="Uncertainty", "control"="Control")
+
+df3$Threat <- recode(df3$condition2, "threat"="Negative", "control"="Positive")
+
+df3$agree_person_R <- recode(df3$agree_person, "1"=7,"2"=6,"3"=5,"4"=4,"5"=3,"6"=2,"7"=1)
+df3$agree_content_R <- recode(df3$agree_content, "1"=7,"2"=6,"3"=5,"4"=4,"5"=3,"6"=2,"7"=1)
+
+
+df3$Defense <- (
+  df3$angry+
+  df3$hostile+
+  df3$furious+
+  df3$infuriated+
+  df3$sad+
+  df3$disappointed+
+  df3$agree_content_R+
+  df3$agree_person_R)/8
+
+```
+
+## Participants
+
+A final sample of `r length(df3$InCS)` participant (`r sum(df3$gender=="Female",na.rm=T)` female, `r sum(df3$gender=="male",na.rm=T)` male; *M*~age~ = `r round(mean(df3$age,na.rm=T),digits=2)`, min = `r min(df3$age,na.rm=T)`, max = `r max(df3$age,na.rm=T)`, *SD* = `r round(sd(df3$age,na.rm=T),digits=2)`) were analysed. In order to ensure the worldview threat manipulation was relevant, all particpants were recruited from the student community in University of Limerick.
+
+## Materials and Procedure:
+
+### Salience / Uncertainty Manipulation
+“Salience” was manipulated by presenting participants with either of the following instructions:
+
+1. ‘‘Please briefly describe the emotions that the thought of your being uncertain arouses in you,’’ and 
+
+2. ‘‘Please write down, as specifically as you can, what you think physically will happen to you as you feel uncertain.’’
+
+Or for the control group:
+
+1. ‘‘Please briefly describe the emotions that the thought watching  television arouses in you,’’ and 
+
+2. ‘‘Please write down, as specifically as you can, what you think physically will happen to you as you watch television.’’
+
+### Worldview threat/defense
+
+Following the Salience manipulation Students read the following article purportedly published in the College Tribune (Newspaper from UCD).
+The positive article reads as follows:
+
+> Last year, I took a course at University of Limerick. I had been looking for an opportunity to take some classes elsewhere and there happened to be a course at University of Limerick that was relevant for my major. So, I signed up for the course, bought the textbook, and went to University of Limerick twice a week for a period of three months. Lectures were well taught and there was ample room to ask questions. It was fun attending the seminars. We had to complete assignments in small groups and it was great working together with these University of Limerick students. Interactions with teachers and students were excellent, so I did not have to adapt to another environment or something like that. The teaching was not very different from teaching at UCD, so I passed the exam with no difficulty. If you are interested in doing so, I certainly would like to recommend to take a course somewhere outside of UCD someday!
+
+The negative article reads:
+
+> Last year, I took a course at University of Limerick. That was a complete disaster! During lectures all students were talking out loud, so I hardly could follow the lectures. Seminars hit an all time low. I was getting the impression that everyone over there were just serving their time. The standards of these University of Limerick students are really low: No one prepares anything and no one asks interesting questions. Worst of all was the fact that I had to complete assignments with a couple of those students. It was very hard working together with those kind of people! If they showed up at all, they only made stupid remarks. Fortunately, things are much better here at UCD. The students over here are motivated and really interested in discussions. The only positive thing of my Utrecht experience was that I passed the exam, so that I do not have to see these University of Limerick students again!
+
+### "Worldview Defense" Measure
+There were eight "Worldview Defense" questions.
+
+1. How angry do you feel at this moment? (1 = *not at all angry*, 7 = *very angry*)
+2. How hostile do you feel at this moment?  (1 = *not at all hostile*, 7 = *very hostile*)
+3. How furious do you feel at this moment? (1 = *not at all furious*, 7 = *very furious*)
+4. How infuriated do you feel at this moment? (1 = *not at all infuriated*, 7 = *very infuriated*)
+5. How sad do you feel at this moment (1 = *very weak*, 7 = *very strong*) 
+6. How disappointed do you feel at this moment?  (1 =  *very weak*, 7 = *very strong*)
+7. To what extent do you disagree or agree with the general idea of the person in the article (1 = *strongly disagree*, 7 = *strongly agree*)
+8. To what extent do you disagree or agree with the remarks of the person with respect to content (1 = *strongly disagree*, 7 = *strongly agree*)
+
+
+
+```{r somedescriptives}
+
+
+angry <- df %>% group_by(condition2,condition1) %>% summarise(descriptives(angry))
+df %>% group_by(condition2,condition1) %>% summarise(descriptives(hostile))
+df %>% group_by(condition2,condition1) %>% summarise(descriptives(furious))
+df %>% group_by(condition2,condition1) %>% summarise(descriptives(infuriated))
+df %>% group_by(condition2,condition1) %>% summarise(descriptives(sad))
+df %>% group_by(condition2,condition1) %>% summarise(descriptives(disappointed))
+df %>% group_by(condition2,condition1) %>% summarise(descriptives(agree_person))
+df %>% group_by(condition2,condition1) %>% summarise(descriptives(agree_content))
+
+
+
+
+t.test(df1$angry~df1$condition2)
+
+
+
+summary(aov(angry         ~ condition1*condition2, data=df2))
+summary(aov(hostile       ~ condition1*condition2, data=df2))
+summary(aov(furious       ~ condition1*condition2, data=df2))
+summary(aov(infuriated    ~ condition1*condition2, data=df2))
+summary(aov(sad           ~ condition1*condition2, data=df2))
+summary(aov(disappointed  ~ condition1*condition2, data=df2))
+summary(aov(agree_person  ~ condition1*condition2, data=df2))
+summary(aov(agree_content ~ condition1*condition2, data=df2))
+
+
+
+```
+
+
+\pagebreak
+
+\vfill
+
+\pagebreak
+
+## Results
+
+```{r S1descriptivetableprep}
+
+defense <- df3 %>% group_by(Salience,Threat) %>% summarise(descriptives(Defense))
+
+defense_anova <- 
+  aov_car(
+    Defense ~ Salience*Threat + Error(ID)
+    , data = df3
+    , type = 3
+    
+  )
+
+defense_anova_results <- apa_print(defense_anova, es = "pes")
+
+```
+
+```{r S1descriptivetable, include=TRUE}
+
+apa_table(
+  printnum(defense)
+  , align = c("l", "l", "c", "c", "c", "c", "c")
+  , caption = "Study 1: descriptive statistics for Worldview Defense by condition"
+#  , note = "This table was created with apa_table()."
+)
+
+
+```
+
+```{r S1anovatable, include=TRUE}
+
+apa_table(
+  defense_anova_results$table
+  , align = c("l", "r", "c", "r", "r", "r")
+  , caption = "Study 1: ANOVA table for the analyis of the example data set."
+
+)
+
+
+```
+
+```{r study1analysis, fig.cap="Study 1: Worldview Defense score depending on condition", include=TRUE}
+apa_factorial_plot(
+  data = df3
+  , id = "ID"
+  , dv = "Defense"
+  , factors = c("Salience", "Threat")
+  , ylim = c(0, 7)
+  #, level = .34
+  #, las = 1
+  , ylab = "Worldview"
+  , plot = c("swarms", "lines", "error_bars", "points")
+)
+
+```
+
+
+
+
+```{r study2}
+
+df3 <- df2
+
+df3$InCS <- df3$InCs
+df3$gender <- df3$Q157
+df3$age <- as.numeric(df3$Q158)
+
+df3$Condition <- recode(df3$condition1, "threat"="Dumbfounding", "control"="Control")
+
+df3$Threat <- recode(df3$condition2, "threat"="Negative", "control"="Positive")
+
+df3$agree_person_R <- recode(df3$agree_person, "1"=7,"2"=6,"3"=5,"4"=4,"5"=3,"6"=2,"7"=1)
+df3$agree_content_R <- recode(df3$agree_content, "1"=7,"2"=6,"3"=5,"4"=4,"5"=3,"6"=2,"7"=1)
+
+
+df3$Defense <- (
+  df3$angry+
+  df3$hostile+
+  df3$furious+
+  df3$infuriated+
+  df3$sad+
+  df3$disappointed+
+  df3$agree_content_R+
+  df3$agree_person_R)/8
+
+```
+
+
+\newpage
+
+\vfill
+
+\newpage
+
+# Study 2
+
+## Results
+
+```{r S2descriptivetableprep}
+
+defense <- df3 %>% group_by(Condition,Threat) %>% summarise(descriptives(Defense))
+
+defense_anova <- 
+  aov_car(
+    Defense ~ Condition*Threat + Error(ID)
+    , data = df3
+    , type = 3
+    
+  )
+
+defense_anova_results <- apa_print(defense_anova, es = "pes")
+
+```
+
+```{r S2descriptivetable, include=TRUE}
+
+apa_table(
+  printnum(defense)
+  , align = c("l", "l", "c", "c", "c", "c", "c")
+  , caption = "Study 2: descriptive statistics for Worldview Defense by condition"
+#  , note = "This table was created with apa_table()."
+)
+
+
+```
+
+```{r S2anovatable, include=TRUE}
+
+apa_table(
+  defense_anova_results$table
+  , align = c("l", "r", "c", "r", "r", "r")
+  , caption = "Study 2: ANOVA table for the analyis of the example data set."
+
+)
+
+
+```
+
+```{r study2analysis, fig.cap="Study 2: Worldview Defense score depending on condition", include=TRUE}
+apa_factorial_plot(
+  data = df3
+  , id = "ID"
+  , dv = "Defense"
+  , factors = c("Condition", "Threat")
+  , ylim = c(0, 7)
+  #, level = .34
+  #, las = 1
+  , ylab = "Worldview"
+  , plot = c("swarms", "lines", "error_bars", "points")
+)
+
+```
+
+
+
+\newpage
+
+\vfill
+
+
+\newpage
+
+\vfill
+
+\newpage
+
+\vfill
+
+
+\newpage
+
+
+
+
+
+
+
+
+
+```{r R_citations, include=FALSE}
+
+r_refs(file = "r-references.bib")
+my_citation <- cite_r(file = "r-references.bib")
+my_citation
+```
+
+# Data Accessibility Statement
+All participant data, and analysis scripts will be available this paper’s project page on the Open Science Framework at [https://osf.io/ubmvs/](https://osf.io/ubmvs/).
+
+All statistical analysis was conducted using `r my_citation`.
+
+
+```{r create_r-references}
+r_refs(file = "r-references.bib")
+```
+
+
+\newpage
+
+\vfill
+
+
+\newpage
+
+\vfill
+
+\newpage
+
+\vfill
+
+
+\newpage
+
+
+# References
+
+
+
