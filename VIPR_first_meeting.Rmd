@@ -1,0 +1,137 @@
+---
+title: "Morality and Moral Judgements"
+subtitle: "On-going (and potential) Projects for VIP-R Collaboration"
+author: "Dr Cillian McHugh"
+date: "Autumn 2020"
+csl: "../../../Research_general/resources/bib/apa.csl"
+bibliography: "../../../Research_general/resources/bib/My Library.bib"
+header-includes:
+   - \usepackage{bbm}
+   - \usepackage{array}
+   - \usepackage{tabulary}
+   - \usepackage{hanging}
+   - \usepackage{hhline}   
+   - \usepackage{multirow}
+   - \usepackage{fancyhdr}
+   - \pagestyle{fancy}
+   - \usepackage{colortbl}
+   - \AtBeginDocument{\let\maketitle\relax}
+   - \usepackage{makecell}
+   - \usepackage{hyperref}
+   - \usepackage{graphicx}
+   - \usepackage{grffile}
+   - \usepackage{multicol}
+output:
+  pdf_document:
+    fig_caption: no
+    keep_tex: true
+   
+---
+
+
+\fancyhead{}
+\fancyfoot{}
+\fancyhead[LO,RE]{{Morality and Moral Judgements}}
+\fancyhead[LE,RO]{\thepage} 
+\fancyfoot[LO,RE]{On-going Projects for VIP-R Collaboration | 2020/21}
+\fancyfoot[LE,RO]{Dr Cillian McHugh}
+
+```{r, include=FALSE, echo=FALSE}
+library(papaja)
+library(pwr)
+```
+
+
+&nbsp;
+
+&nbsp;
+
+&nbsp;
+
+
+\begin{center}
+ \includegraphics[width=800px]{"../../../Research_general/resources/images/ul-logo1.jpg"}
+\end{center}
+
+\raggedright
+&nbsp;
+
+&nbsp;
+
+&nbsp;
+
+&nbsp;
+
+\renewcommand{\arraystretch}{1.5}
+
+
+\begin{center}
+
+
+\bigskip
+
+
+\bigskip
+
+\begin{huge} Morality and Moral Judgements
+\end{huge}
+
+\begin{large} On-going (and potential) Projects for VIP-R Collaboration
+
+\textit{Dr Cillian McHugh, University of Limerick}
+
+\textit{September 2020}
+
+
+\bigskip
+
+
+\bigskip
+
+cillian.mchugh@ul.ie
+
+\end{large}
+\end{center}
+
+\pagebreak
+
+
+# On-going Morality Research:
+- Moral Judgement as Categorisation
+  - Meaning Maintenance and Morality
+- Moral Dumbfounding
+- Miscellaneous: Identity, and Networks
+
+
+## Moral Judgement as Categorisation
+- See [\color{blue}this paper currently under review\color{black}](https://psyarxiv.com/72dzp/)
+
+### Testable Predictions/Possible Studies
+- Typicality in moral categorisations?
+- Non-moral dumbfounding
+- Equivalent contextual influences
+  - e.g., order effects (ethics approved)
+- Additional predictions in Table 2 in paper
+
+### Meaning Maintenance and Morality
+- *Difficult* Moral judgements as a threat to meaning
+- Test *fluid compensation* in non-moral paradigm (ethics approved)
+- Test *fluid compensation* in moral paradigm (ethics approved)
+  - Some data collected 
+
+## Moral Dumbfounding
+- Cognitive Load Studies (ethics approved)
+- Distancing Studies (ethics approved)
+- Non-Weird Studies (ethics approved)
+- **Individual Differences** e.g., Personality (ethics approved)
+
+## Miscellaneous: Identity, and Networks
+- Morality, Identity, and Networks:
+  - Reanalyse Moral Foundations data (no ethics needed)
+- Proposed Pre-registered Replication of Novel Dilemma study [\color{blue}[@railton_moral_2017]\color{black}](https://drive.google.com/drive/folders/1-D_LgP687zYjRG5893pzAUYDykFt-F3I?usp=sharing)
+- Disgust Sensitivity and Emotional Differentiation
+
+\pagebreak
+
+# References
+
