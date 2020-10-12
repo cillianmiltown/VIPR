@@ -58,12 +58,21 @@ load("../meaning_threat.RData")
 
 ```
 
+# Background and Aims
+
+- According to the Meaning Maintenance Model [@heine_meaning_2006], when people experience a threat to meaning they attempt to restore meaning through a compensatory response [@heine_meaning_2006; @proulx_five_2012; @proulx_connections_2009].
+- We hypothesise that being faced with the possibility of being morally dumbfounded constitutes a threat too meaning.
+- This would predict that taking part in a moral dumbfounding task [@mchugh_searching_2017a] leads to the same kind of compensatory response as observed in response to other meaning threats.
+- We test this with two studies:
+  - **Study 1**: replication of an existing meaning threat study [uncertainty threat, @vandenbos_enquiry_2005].
+  - **Study 2**: similar to Study 1, but replacing the "uncertainty" threat with a moral dumbfounding task.
+
 # Study 1
 ## Background
-The aim of Study 1 was to replicate the *uncertainty threat* finding by @vandenbos_enquiry_2005. Participants completed a task that either poses an uncertainty threat (or does not – control). Following this participants read a hypothetical article about University of Limerick. This article was either positive or negative. We hypothesised that the participants in the uncertainty threat condition will display more “worldview defense” in response to the negative article than the participants in the control condition.
+The aim of Study 1 was to replicate the *uncertainty threat* finding by @vandenbos_enquiry_2005. Participants completed a task that either poses an uncertainty threat (or does not – control). Following this participants read a hypothetical article about University of Limerick. This article was either positive or negative. We hypothesised that the participants in the uncertainty threat condition will display more "worldview defense" in response to the negative article than the participants in the control condition.
 
 ## Design:
-2x2 Factorial design. IV1 is “salience” with 2 levels: uncertainty vs television. IV2 is article type with two levels: positive and negative. Primary Dependent variable is “worldview defense” however measures of Anger and Sadness were taken. Need for Closure and Self-esteem were additionally measured as potential moderator variables (not investigated in this first look document).
+2x2 Factorial design. IV1 is “salience” with 2 levels: uncertainty vs television. IV2 is article type with two levels: threat and no threat. Primary Dependent variable is "worldview defense" however measures of Anger and Sadness were taken. Need for Closure and Self-esteem were additionally measured as potential moderator variables (not investigated in this first look document).
 
 ```{r study1}
 
@@ -75,7 +84,7 @@ df3$age <- as.numeric(df3$Q158)
 
 df3$Salience <- recode(df3$condition1, "threat"="Uncertainty", "control"="Control")
 
-df3$Threat <- recode(df3$condition2, "threat"="Negative", "control"="Positive")
+df3$Threat <- recode(df3$condition2, "threat"="Threat", "control"="No Threat")
 
 df3$agree_person_R <- recode(df3$agree_person, "1"=7,"2"=6,"3"=5,"4"=4,"5"=3,"6"=2,"7"=1)
 df3$agree_content_R <- recode(df3$agree_content, "1"=7,"2"=6,"3"=5,"4"=4,"5"=3,"6"=2,"7"=1)
@@ -115,11 +124,11 @@ Or for the control group:
 ### Worldview threat/defense
 
 Following the Salience manipulation Students read the following article purportedly published in the College Tribune (Newspaper from UCD).
-The positive article reads as follows:
+The threat article reads as follows:
 
 > Last year, I took a course at University of Limerick. I had been looking for an opportunity to take some classes elsewhere and there happened to be a course at University of Limerick that was relevant for my major. So, I signed up for the course, bought the textbook, and went to University of Limerick twice a week for a period of three months. Lectures were well taught and there was ample room to ask questions. It was fun attending the seminars. We had to complete assignments in small groups and it was great working together with these University of Limerick students. Interactions with teachers and students were excellent, so I did not have to adapt to another environment or something like that. The teaching was not very different from teaching at UCD, so I passed the exam with no difficulty. If you are interested in doing so, I certainly would like to recommend to take a course somewhere outside of UCD someday!
 
-The negative article reads:
+The no threat article reads:
 
 > Last year, I took a course at University of Limerick. That was a complete disaster! During lectures all students were talking out loud, so I hardly could follow the lectures. Seminars hit an all time low. I was getting the impression that everyone over there were just serving their time. The standards of these University of Limerick students are really low: No one prepares anything and no one asks interesting questions. Worst of all was the fact that I had to complete assignments with a couple of those students. It was very hard working together with those kind of people! If they showed up at all, they only made stupid remarks. Fortunately, things are much better here at UCD. The students over here are motivated and really interested in discussions. The only positive thing of my Utrecht experience was that I passed the exam, so that I do not have to see these University of Limerick students again!
 
@@ -179,7 +188,7 @@ summary(aov(agree_content ~ condition1*condition2, data=df2))
 
 ## Results
 
-Worldview defense was significantly higher for the negative threat condition than for the positive threat. Salience (uncertainty vs control) did not have a significant influence. There was no interaction between Salience and Threat.
+Worldview defense was significantly higher for the threat condition than for the no threat condition. Salience (uncertainty vs control) did not have a significant influence. There was no interaction between Salience and Threat.
 
 ```{r S1descriptivetableprep}
 
@@ -249,7 +258,7 @@ df3$age <- as.numeric(df3$Q165)
 
 df3$Condition <- recode(df3$condition1, "threat"="Dumbfounding", "control"="Control")
 
-df3$Threat <- recode(df3$condition2, "threat"="Negative", "control"="Positive")
+df3$Threat <- recode(df3$condition2, "threat"="Threat", "control"="No Threat")
 
 df3$agree_person_R <- recode(df3$agree_person, "1"=7,"2"=6,"3"=5,"4"=4,"5"=3,"6"=2,"7"=1)
 df3$agree_content_R <- recode(df3$agree_content, "1"=7,"2"=6,"3"=5,"4"=4,"5"=3,"6"=2,"7"=1)
@@ -288,7 +297,7 @@ df3$Dumbfounded <- recode(
 Study 2 was an extension of Study 1, however the uncertainty threat will be replaced by a moral dumbfounding task. The control will be replaced with a moral task that is not as challenging as a dumbfounding task. We hypothesised that participants in the dumbfounding condition will display more “worldview defense” in response to the negative article than the participants in the moral judgement condition.
 
 ## Design:
-2x2 Factorial design. IV1 is “threat level” with 2 levels: high (dumbfounding) vs low (moral judgement). IV2 is article type with two levels: positive and negative. Primary Dependent variable is “worldview defense” however measures of Anger and Sadness will also be taken. Need for Closure and Self-esteem will be additionally measured as potential moderator variables.
+2x2 Factorial design. IV1 is “threat level” with 2 levels: high (dumbfounding) vs low (moral judgement). IV2 is article type with two levels: threat and no threat. Primary Dependent variable is “worldview defense” however measures of Anger and Sadness will also be taken. Need for Closure and Self-esteem will be additionally measured as potential moderator variables.
 
 ## Participants
 
@@ -362,7 +371,7 @@ This was manipulated and measured using the same procedure as Study 1.
 
 ## Results
 
-Worldview defense was significantly higher for the negative threat condition than for the positive threat. The type of task (dumbfounding vs judgement) did not have a significant influence. There was no interaction between Condition and Threat.
+Worldview defense was significantly higher for the threat condition than for the no threat condition. The type of task (dumbfounding vs judgement) did not have a significant influence. There was no interaction between Condition and Threat.
 
 ```{r S2descriptivetableprep}
 
@@ -427,7 +436,7 @@ apa_factorial_plot(
 
 Given that dumbfounding was the condition of interest, and both moral judgement tasks measured dumbfounded responding, a follow up analysis replaced the Condition as the IV with the response to the critical slide as the IV. 
 
-In this alternative analysis, Worldview defense was significantly higher for the negative threat condition than for the positive threat. Response to the critical slide (dumbfounding vs judgement) did not have a significant influence. There was no interaction between Response to the critical slide and Threat.
+In this alternative analysis, Worldview defense was significantly higher for the threat condition than for the no threat condition. Response to the critical slide (dumbfounding vs judgement) did not have a significant influence. There was no interaction between Response to the critical slide and Threat.
 
 ```{r S2descriptivetableprep2}
 
