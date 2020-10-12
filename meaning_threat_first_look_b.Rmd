@@ -61,8 +61,8 @@ load("../meaning_threat.RData")
 # Background and Aims
 
 - According to the Meaning Maintenance Model [@heine_meaning_2006], when people experience a threat to meaning they attempt to restore meaning through a compensatory response [@heine_meaning_2006; @proulx_five_2012; @proulx_connections_2009].
-- We hypothesise that being faced with the possibility of being morally dumbfounded constitutes a threat too meaning.
-- This would predict that taking part in a moral dumbfounding task [@mchugh_searching_2017a] leads to the same kind of compensatory response as observed in response to other meaning threats.
+- We hypothesise that being faced with the possibility of being morally dumbfounded constitutes a threat to meaning.
+- This would predict that taking part in a moral dumbfounding task leads to the same kind of compensatory response as observed in response to other meaning threats.
 - We test this with two studies:
   - **Study 1**: replication of an existing meaning threat study [uncertainty threat, @vandenbos_enquiry_2005].
   - **Study 2**: similar to Study 1, but replacing the "uncertainty" threat with a moral dumbfounding task.
@@ -294,7 +294,7 @@ df3$Dumbfounded <- recode(
 # Study 2
 
 ## Background 
-Study 2 was an extension of Study 1, however the uncertainty threat will be replaced by a moral dumbfounding task. The control will be replaced with a moral task that is not as challenging as a dumbfounding task. We hypothesised that participants in the dumbfounding condition will display more “worldview defense” in response to the negative article than the participants in the moral judgement condition.
+Study 2 was an extension of Study 1, however the uncertainty threat will be replaced by a moral dumbfounding task [@mchugh_searching_2017a]. The control will be replaced with a moral task that is not as challenging as a dumbfounding task. We hypothesised that participants in the dumbfounding condition will display more “worldview defense” in response to the negative article than the participants in the moral judgement condition.
 
 ## Design:
 2x2 Factorial design. IV1 is “threat level” with 2 levels: high (dumbfounding) vs low (moral judgement). IV2 is article type with two levels: threat and no threat. Primary Dependent variable is “worldview defense” however measures of Anger and Sadness will also be taken. Need for Closure and Self-esteem will be additionally measured as potential moderator variables.
