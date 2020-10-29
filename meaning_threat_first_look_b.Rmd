@@ -497,6 +497,8 @@ apa_factorial_plot(
 
 ## Additional Analysis
 
+### Confidence
+
 #### Initially:
 
 - How confident are you in the judgement you have made?
@@ -638,6 +640,82 @@ apa_table(
 <br> 
 
 <br>
+
+### Dumbfounding
+
+```{r}
+
+df3$InCS_neat <- 
+  recode(df3$InCS
+                        , "It's wrong and I can provide a valid reason." = "Reasons"
+                        , "There is nothing wrong." = "Nothing Wrong"
+                        , "It's wrong but I can't think of a reason." = "Dumbfounded"
+                        )
+
+table(df3$InCS,df3$condition1)
+
+con_table <- tapply(df3$Defense, df3$InCS_neat, descriptives)
+
+
+a <- aov(Defense~InCS_neat, df3)
+TukeyHSD(a)
+
+tuk <- TukeyHSD(a)
+apa_table(tuk$InCS)
+
+apa_a <- apa_print(a)
+
+df3$InCS_neat <- 
+  recode(df3$InCS
+                        , "It's wrong and I can provide a valid reason." = "Reasons"
+                        , "There is nothing wrong." = "Nothing Wrong"
+                        , "It's wrong but I can't think of a reason." = "Dumbfounded"
+                        )
+```
+
+
+```{r additionalanalysis3, fig.cap="Study 2: Defense score depending on response to Critical Slide", include=TRUE}
+apa_barplot(
+  data = df3
+  , id = "ID"
+  , factors = "InCS_neat"
+  , dv = "Defense"
+  , ylab = "Defense"
+  , xlab = "Critical Slide")
+```
+
+
+```{r descriptivestable3, include=TRUE}
+
+apa_table(
+  `rownames<-`(rbind(con_table$Dumbfounded,con_table$Reasons,con_table$`Nothing Wrong`), c("Dumbfounded", "Reasons", "Nothing Wrong"))
+  , caption = "Descriptive statistics for Confidence Scores by Condition")
+
+```
+
+
+```{r descriptivestable4, include=TRUE}
+
+apa_table(
+  apa_a$table
+  , caption = "ANOVA table")
+
+```
+
+
+
+```{r descriptivestable5, include=TRUE}
+
+apa_table(
+  tuk$InCS
+  , caption = "Tukey's Pairwise comparisons")
+
+```
+
+<br>
+
+<br>
+
 
 
 \newpage
