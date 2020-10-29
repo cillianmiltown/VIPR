@@ -1,8 +1,8 @@
 ---
 title: "Meaning Threat and Moral Dumbfounding"
 subtitle: "Two studies on threat and worldview defense"
-author: "Cillian McHugh and Jade Gill"
-date: "7th October 2020"
+author: "Cillian McHugh"
+date: "30th October 2020"
 bibliography: "../../resources/bib/My Library.bib"
 csl: "../../apa.csl"
 output:
@@ -57,6 +57,8 @@ rm(list=ls())
 load("../meaning_threat.RData")
 
 ```
+
+([shared document for developing follow up studies available here](https://docs.google.com/document/d/1uZCHeWoCfA3utWq7o2IZZkI_EyQA5S0JUMCldhm6X-M/edit?usp=sharing))
 
 # Background and Aims
 
@@ -493,6 +495,149 @@ apa_factorial_plot(
 
 ```
 
+## Additional Analysis
+
+#### Initially:
+
+- How confident are you in the judgement you have made?
+
+```{r}
+df3$conf1 <-
+  replace_na(
+    recode(df3$Q9
+           , "1:\n\nNot confident at all" = 1
+           , "2" = 2
+           , "3" = 3
+           , "4" = 4
+           , "5" = 5
+           , "6" = 6
+           , "7:\nExtremely confident" = 7
+    )
+    , 0
+  )+
+  replace_na(
+    recode(df3$Q36
+           , "1:\n\nNot confident at all" = 1
+           , "2" = 2
+           , "3" = 3
+           , "4" = 4
+           , "5" = 5
+           , "6" = 6
+           , "7:\nExtremely confident" = 7
+    )
+    , 0)
+df3 <- df3[which(df3$conf1!=0),]
+
+con_table <- tapply(df3$conf1, df3$condition1, descriptives)
+
+apa_table(`rownames<-`(rbind(con_table$control,con_table$threat), c("control","threat")))
+
+apa_table(con_table$control)
+t <- t.test(df3$conf1~df3$condition1)
+apa_print(t)
+
+
+t_apa <- apa_print(t)
+
+t_apa$full_result
+
+```
+
+```{r additionalanalysis, fig.cap="Study 2: Confidence score depending on condition", include=TRUE}
+apa_barplot(
+  data = df3
+  , id = "ID"
+  , factors = "condition1"
+  , dv = "conf1"
+  , ylab = "Confidence"
+  , xlab = "Condition")
+```
+
+
+```{r descriptivestable, include=TRUE}
+
+apa_table(
+  `rownames<-`(rbind(con_table$control,con_table$threat), c("control","threat"))
+  , caption = "Descriptive statistics for Confidence Scores by Condition")
+
+```
+
+`r t_apa$full_result`
+
+<br> 
+
+<br>
+
+#### Revised:
+
+- How confident are you in the judgement you have made?
+
+```{r}
+df3$conf1 <-
+  replace_na(
+    recode(df3$Q21
+           , "1:\n\nNot confident at all" = 1
+           , "2" = 2
+           , "3" = 3
+           , "4" = 4
+           , "5" = 5
+           , "6" = 6
+           , "7:\nExtremely confident" = 7
+    )
+    , 0
+  )+
+  replace_na(
+    recode(df3$Q47
+           , "1:\n\nNot confident at all" = 1
+           , "2" = 2
+           , "3" = 3
+           , "4" = 4
+           , "5" = 5
+           , "6" = 6
+           , "7:\nExtremely confident" = 7
+    )
+    , 0)
+df3 <- df3[which(df3$conf1!=0),]
+
+con_table <- tapply(df3$conf1, df3$condition1, descriptives)
+
+apa_table(`rownames<-`(rbind(con_table$control,con_table$threat), c("control","threat")))
+
+apa_table(con_table$control)
+t <- t.test(df3$conf1~df3$condition1)
+apa_print(t)
+
+
+t_apa <- apa_print(t)
+
+t_apa$full_result
+
+```
+
+```{r additionalanalysis2, fig.cap="Study 2: Confidence score depending on condition", include=TRUE}
+apa_barplot(
+  data = df3
+  , id = "ID"
+  , factors = "condition1"
+  , dv = "conf1"
+  , ylab = "Confidence"
+  , xlab = "Condition")
+```
+
+
+```{r descriptivestable2, include=TRUE}
+
+apa_table(
+  `rownames<-`(rbind(con_table$control,con_table$threat), c("control","threat"))
+  , caption = "Descriptive statistics for Confidence Scores by Condition")
+
+```
+
+`r t_apa$full_result`
+
+<br> 
+
+<br>
 
 
 \newpage
