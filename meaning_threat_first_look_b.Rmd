@@ -641,7 +641,7 @@ apa_table(
 
 <br>
 
-### Dumbfounding
+### Dumbfounding and Defense
 
 ```{r}
 
@@ -716,7 +716,139 @@ apa_table(
 
 <br>
 
+### Dumbfounding and Scenario
 
+```{r prepS1fig2}
+
+df3$condition <- df3$condition1
+
+y <- table(df3$condition,df3$Dumbfounded)
+y <- as.data.frame(y)
+colnames(y) <- c("condition","InCS","Freq")
+
+z <- as.data.frame(table(df3$condition,df3$Dumbfounded)/length(df3$gender)*2)
+perc <- z$Freq
+test <- cbind(y,perc)
+test$condition
+
+
+ab_graph <- function(){
+  a <- df3[which(df3$condition==levels(as.factor(df3$condition))[1]),]
+  b <- df3[which(df3$condition==levels(as.factor(df3$condition))[2]),]
+  #levels(as.factor(df3$condition))[1]
+  
+  ay <- as.data.frame(table(a$Dumbfounded,a$condition))
+  by <- as.data.frame(table(b$Dumbfounded,b$condition))
+  
+  aperc <- ay$Freq/length(a$gender)
+  ay <- cbind(ay,aperc)
+  colnames(ay) <- c("InCS","condition","Freq","perc")
+  
+  bperc <- by$Freq/length(b$gender)
+  by <- cbind(by,bperc)
+  colnames(by) <- c("InCS","condition","Freq","perc")
+  
+  c <- rbind(ay,by)
+  
+  c
+}
+
+test <- ab_graph()
+
+rm(x,y)
+```
+
+```{r}
+library(scales)
+library(pwr)
+g <- 
+  ggplot(test, aes(x=InCS, y=perc, fill=factor(condition,labels=c("Paxman","Julie and Mark")))) +
+  scale_y_continuous(limits = c(-.03,1),
+                     labels = percent_format()
+  )+ 
+  geom_col(position = "dodge",
+           color="black",
+           size=.2
+  )+
+  geom_text(family = "Times", size=4.2,
+            aes( label = scales::percent(test$perc),
+                 y= perc ),
+            stat= "identity",
+            vjust = -.5,
+            position = position_dodge(.9),
+            fontface='plain'
+            )+
+  geom_text(family = "Times", size=4.2,
+            aes(label = format(Freq),
+                y= -3*(..count../100)/(..count..)),
+            stat= "count",
+            position = position_dodge(0.9),
+            #vjust = -.05,
+            fontface='plain'
+            ) +
+  xlab("Response to Critical Slide") +
+  ylab("Percentage of participants selecting each response")+
+  #scale_x_discrete(labels=c("Nothing Wrong", "Dumbfounded","Reasons")) +
+  scale_fill_grey(start = .5, end = .8) +
+  labs(fill="Condition") +
+  
+  geom_text(family = "Times", size=4.2,
+            aes( label = scales::percent(test$perc),
+                 y= test$perc ),
+            stat= "identity",
+            vjust = -.5,
+            position = position_dodge(.9),
+            fontface='plain'
+            )+
+  #theme_apa() +
+  theme_bw() +
+  theme(plot.title=element_text(family="Times",
+                                size=12
+                                ),
+        legend.text=element_text(family="Times",
+                                 size=8
+                                 ),
+          legend.title=element_text(family="Times",
+                                    size=10
+                                    ),
+          axis.text=element_text(family="Times",
+                                 colour = "black",
+                                 size=8
+                                 ),
+          axis.ticks.x = element_blank(),
+          axis.title=element_text(family="Times",
+                                  size=12
+                                  ),
+          strip.text=element_text(family = "Times",
+                                  size = 12
+                                  ),
+          strip.background = element_rect(fill = "white"),
+          legend.position="right")
+```
+ 
+
+```{r S1fig2criticalcondition, fig.cap="Study 1: Responses to critical slide and for the dumbfounding group (*N* = 95) and the control group (*N* = 76)", include=TRUE}
+
+
+suppressWarnings(print(g))
+
+
+
+
+```
+
+<br>
+```{r}
+c <- chisq.test(table(df3$InCS,df3$condition))
+w <- sqrt(c[]$statistic/length(df3$gender))
+pw <- pwr.chisq.test(w=w,N=length(df3$InCS),df=(3-1),sig.level = .05)
+
+```
+
+A chi-squared test for independence revealed no significant association between experimental condition and response to the critical slide, $\chi$^2^(`r c$parameter`, *N* = `r length(df3$InCs)`) = `r round(c$statistic, digits=3)`, *p* `r paste(p_report(c$p.value))`, *V* = `r round(w, digits=2)`, the observed power was `r round(pw$power, digits=2)`.
+<br>
+
+<br>
 
 \newpage
 
