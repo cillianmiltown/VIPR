@@ -595,7 +595,7 @@ rm(x,y)
 library(scales)
 library(pwr)
 g <- 
-  ggplot(test, aes(x=InCS, y=perc, fill=factor(condition,labels=c("Paxman","Julie and Mark")))) +
+  ggplot(test, aes(x=InCS, y=perc, fill=factor(condition,labels=c("Jennifer","Julie and Mark")))) +
   scale_y_continuous(limits = c(-.03,1),
                      labels = percent_format()
   )+ 
@@ -660,7 +660,7 @@ g <-
 ```
  
 
-```{r S1fig2criticalcondition, fig.cap="Study 1: Responses to critical slide and for the dumbfounding group (*N* = 95) and the control group (*N* = 76)", include=TRUE}
+```{r S1fig2criticalcondition, fig.cap="Study 1: Responses to critical slide and for the *Incest* group (*N* = 141) and the *Cannibal* group (*N* = 142)", include=TRUE}
 
 
 suppressWarnings(print(g))
