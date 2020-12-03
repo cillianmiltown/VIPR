@@ -1,0 +1,814 @@
+---
+title: "Meaning Threat and Moral Dumbfounding"
+subtitle: "Two studies on threat and worldview defense"
+author: "Cillian McHugh"
+date: "1st December 2020"
+bibliography: "../../resources/bib/My Library.bib"
+csl: "../../apa.csl"
+output:
+  bookdown::html_document2:
+    fig_caption: yes
+    toc: true
+    toc_float:
+      toc_collapsed: false
+    toc_depth: 4
+    number_sections: false
+editor_options: 
+  chunk_output_type: console
+---
+
+<script>
+$(document).ready(function() {
+  $items = $('div#TOC li');
+  $items.each(function(idx) {
+    num_ul = $(this).parentsUntil('#TOC').length;
+    $(this).css({'text-indent': num_ul * 10, 'padding-left': 10});
+  });
+
+});
+</script>
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+knitr::opts_chunk$set(include = FALSE)
+```
+
+```{r loadlibraries}
+
+library(foreign)
+library(papaja)
+library(haven)
+library(dplyr)
+library(data.table)
+library(reshape2)
+library(desnum)
+library(tidyverse)
+library(afex)
+
+
+
+```
+
+```{r loaddata}
+#setwd("categorisation_project")
+#source("set_up_meaning_threat.R")
+
+rm(list=ls())
+load("../meaning_threat.RData")
+
+```
+
+
+
+
+```{r study2}
+
+df3 <- follow_up
+
+#df3$InCS <- df3$InCs
+df3$gender <- df3$Q163
+df3$age <- as.numeric(df3$Q165)
+
+#df3$Condition <- recode(df3$condition1, "threat"="Dumbfounding", "control"="Control")
+
+#df3$Threat <- recode(df3$condition2, "threat"="Threat", "control"="No Threat")
+
+df3$agree_person_R <- recode(df3$agree_person, "1"=7,"2"=6,"3"=5,"4"=4,"5"=3,"6"=2,"7"=1)
+df3$agree_content_R <- recode(df3$agree_content, "1"=7,"2"=6,"3"=5,"4"=4,"5"=3,"6"=2,"7"=1)
+
+
+df3$Defense <- (
+  df3$angry+
+  df3$hostile+
+  df3$furious+
+  df3$infuriated+
+  df3$sad+
+  df3$disappointed+
+  df3$agree_content_R+
+  df3$agree_person_R)/8
+
+df3$Dumbfounded <- recode(
+  df3$InCS,
+   "It's wrong but I can't think of a reason." = "Dumbfounded"
+   ,"There is nothing wrong." = "Nothing Wrong"
+   ,"It's wrong and I can provide a valid reason." = "Reasons"
+   , "It is wrong and I can provide a valid reason." = "Reasons"
+   , "There is nothing wrong with what Arnold did." = "Nothing Wrong"
+   , "It is wrong but I cannot think of a reason." = "Dumbfounded"
+)
+
+write_sav(df3, "study_3.sav")
+
+test <- read_sav("study_3.sav")
+
+```
+
+
+\newpage
+
+\vfill
+
+\newpage
+
+# Study 3
+
+## Background 
+Study 3 was a partial replication and extension of Study 2, however the uncertainty threat was not directly manipulated. Instead we included a moral dumbfounding task for all participants. Building on the assumptions that informed the predictions of Study 2, we hypothesised that participants who provided dumbfounded responses would experience a greater threat to meaning than participants who provided reasons for their judgement, manifesting in greater "worldview defense" through fluid compensation. 
+
+## Design:
+Study 3 is a 3x2 Factorial design. IV1 is level of dumbfounding with levels: dumbfounded, providing reasons, nothing wrong. IV2 is threat, operationalised as article type with two levels: positive (no threat) and negative (threat). Primary Dependent variable is “worldview defense” however measures of Anger and Sadness will also be taken. Need for Closure and Self-esteem will be additionally measured as potential moderator variables.
+
+With "worldview defense" as the dependent variable, we predict the following:
+
+- **H1**: There will be a main effect for threat (with higher "worldview defense" scores recorded in the threat condition than in the no threat condition)
+- **H2**: There will be a main effect for Dumbfounded responding (with participants who are dumbfounded recording higher "worldview defense" scores than participants who provide reasons or select "nothing wrong")
+- **H3**: There will be an interaction between the IVs, such that the main effect for dumbfounding will be most pronounced in the Threat condition.
+
+## Participants
+
+A final sample of `r length(df3$InCS)` participant (`r sum(df3$gender=="Female",na.rm=T)` female, `r sum(df3$gender=="male",na.rm=T)` male; *M*~age~ = `r round(mean(df3$age,na.rm=T),digits=2)`, min = `r min(df3$age,na.rm=T)`, max = `r max(df3$age,na.rm=T)`, *SD* = `r round(sd(df3$age,na.rm=T),digits=2)`) were analysed. In order to ensure the worldview threat manipulation was relevant, all particpants were recruited from the student community in University of Limerick.
+
+
+### Moral dumbfounding task:
+Participants were presented with the target moral scenario, either the “Julie and Mark” (*Incest*) vignette, or the "Jennifer" (*Cannibalism*) vignette (See below), taken from the original moral dumbfounding study (Haidt, Björklund, & Murphy, 2000). 
+
+Participants were be asked to rate, on a 7-point Likert scale, how right or wrong the behaviour was (where, 1 = Morally wrong; 4 = Neutral; 7 = Morally right).  They were then provided with an open ended response option and asked to provide a reason for their judgement.  They then rated their certainty.  Following this, participants were presented with a series of counter-arguments, which refute commonly used justifications for rating the behaviour as “wrong” (see below).  After each counter-argument, participants were asked “Do you (still) think it is wrong?”, with a binary “yes/no” response option; and then they will be asked “Do you have a reason for your judgement?”, with three possible response options “Yes, I have a reason”, “No I have no reason”, and “Unsure”.
+
+#### Measuring Dumbfounding
+Dumbfounding was measured using the critical slide.  The critical slide contains a statement defending the behaviour and a question as to how the behaviour could be wrong
+
+> “Julie and Mark’s behaviour did not harm anyone, how can there be anything wrong with what they did?”.
+
+There are three possible answer options: (a) “There is nothing wrong”; (b) an admission of not having reasons (“It’s wrong but I can’t think of a reason”); and finally a judgement with accompanying justification (c) “It’s wrong and I can provide a valid reason”.
+
+The order of these response options was randomised.  Participants who select (c) were prompted on the following slide to type a reason.
+The selecting of option (b), the admission of not having reasons, will be taken to be a dumbfounded response.
+
+#### Follow-up Measures
+Following the critical slide, participants rated the behaviour, and their certainty judgement again. 
+They were be asked to indicate, on a 7-point Likert scale, how much they had changed their mind. Following this a post-discussion questionnaire, taken from Haidt et al. (2000) will be administered (see below).
+
+## Materials
+
+### Dumbfounding
+
+#### Dumbfounding vignettes
+
+##### **Julie and Mark**
+(Taken from Haidt et al., 2000)
+> Julie and Mark, who are brother and sister are travelling together in France. They are both on summer vacation from college. One night they are staying alone in a cabin near the beach. They decide that it would be interesting and fun if they tried making love. At very least it would be a new experience for each of them. Julie was already taking birth control pills, but Mark uses a condom too, just to be safe. They both enjoy it, but they decide not to do it again. They keep that night as a special secret between them, which makes them feel even closer to each other.
+
+##### **Jennifer**
+> Jennifer works in a medical school pathology lab as a research assistant. The lab prepares human cadavers that are used to teach medical students about anatomy. The cadavers come from people who had donated their body for the general use of the researchers in the lab. The bodies are normally cremated, however, severed cuts may be disposed of at the discretion of lab researchers, One night Jennifer is leaving the lab when she sees a body that is going to be discarded the next day. Jennifer was a vegetarian, for moral reasons. She thought it was wrong to kill animals for food. But then, when she saw a body about to be cremated, she thought it was irrational to waste perfectly edible meat. So she cut off a piece of flesh, and took it home and cooked it. The person had died recently of a heart attack, and she cooked the meat thoroughly, so there was no risk of disease
+
+#### Dumbfounding: counter-arguments
+
+##### **Julie and Mark**
+- Do you not agree that any concerns regarding reproductive complications are eased by their using of two forms of contraception?
+- Do you accept that they are both consenting adults, and that they both consented and enjoyed it?
+- And do you concede that nobody else was affected by their actions?
+
+##### **Jennifer**
+- The body had been donated for research, it was to be discarded the next day. You must agree then that it had obviously fulfilled its purpose?
+- Do you accept that the body was already dead?
+- And do you accept that there was no risk of disease?
+
+#### Dumbfounding: Critical Slides
+
+##### **Julie and Mark**
+
+> Julie and Mark’s actions did not harm anyone, or negatively affect anyone.
+How can there be anything wrong with what they did?
+
+(a) It’s wrong and I can provide a valid reason.
+
+(b) It’s wrong but I can’t think of a reason.
+
+(c) There is nothing wrong.
+
+##### **Jennifer**
+> Jennifer's actions did not harm anyone, or negatively affect anyone.
+How can there be anything wrong with what she did?
+
+(a) It’s wrong and I can provide a valid reason.
+
+(b) It’s wrong but I can’t think of a reason.
+
+(c) There is nothing wrong.
+
+### Worldview threat/defense
+
+Following the Salience manipulation Students read the following article purportedly published in the College Tribune (Newspaper from UCD).
+The positive article reads as follows:
+
+> Last year, I took a course at University of Limerick. I had been looking for an opportunity to take some classes elsewhere and there happened to be a course at University of Limerick that was relevant for my major. So, I signed up for the course, bought the textbook, and went to University of Limerick twice a week for a period of three months. Lectures were well taught and there was ample room to ask questions. It was fun attending the seminars. We had to complete assignments in small groups and it was great working together with these University of Limerick students. Interactions with teachers and students were excellent, so I did not have to adapt to another environment or something like that. The teaching was not very different from teaching at UCD, so I passed the exam with no difficulty. If you are interested in doing so, I certainly would like to recommend to take a course somewhere outside of UCD someday!
+
+The negative article reads:
+
+> Last year, I took a course at University of Limerick. That was a complete disaster! During lectures all students were talking out loud, so I hardly could follow the lectures. Seminars hit an all time low. I was getting the impression that everyone over there were just serving their time. The standards of these University of Limerick students are really low: No one prepares anything and no one asks interesting questions. Worst of all was the fact that I had to complete assignments with a couple of those students. It was very hard working together with those kind of people! If they showed up at all, they only made stupid remarks. Fortunately, things are much better here at UCD. The students over here are motivated and really interested in discussions. The only positive thing of my University of Limerick experience was that I passed the exam, so that I do not have to see these University of Limerick students again!
+
+### "Worldview Defense" Measure
+
+How angry do you feel at this moment? (1 = not at all angry, 7 = very angry)
+
+How hostile do you feel at this moment?  (1 = not at all hostile, 7 = very hostile)
+
+How furious do you feel at this moment? (1 = not at all furious, 7 = very furious)
+
+How infuriated do you feel at this moment? (1 = not at all infuriated, 7 = very infuriated)
+
+How sad do you feel at this moment (1 = very weak, 7 = very strong) 
+
+How disappointed do you feel at this moment?  (1 =  very weak, 7 = very strong)
+
+To what extent do you disagree or agree with the general idea of the person in the article (1 = strongly disagree, 7 = strongly agree)
+
+To what extent do you disagree or agree with the remarks of the person with respect to content (1 = strongly disagree, 7 = strongly agree)
+
+# Results
+
+## Scenario/Condition Effects:
+Worldview defense was significantly higher for the threat condition than for the no threat condition. Scenario (*Incest* vs *Cannibal*) did not have a significant influence. There was no interaction between Condition and Scenario.
+
+```{r S2descriptivetableprep}
+
+defense <- df3 %>% group_by(condition,scenario) %>% summarise(descriptives(Defense))
+
+defense_anova <- 
+  aov_car(
+    Defense ~ condition*scenario + Error(ID)
+    , data = df3
+    , type = 3
+    
+  )
+
+a <- aov(Defense ~ condition*scenario, data = df3)
+summary(a)
+defense_anova_results <- apa_print(defense_anova, es = "pes")
+
+```
+
+
+
+```{r S2descriptivetable, include=TRUE}
+
+apa_table(
+  printnum(defense)
+  , align = c("l", "l", "c", "c", "c", "c", "c")
+  , caption = "Study 3: descriptive statistics for Worldview Defense by condition"
+#  , note = "This table was created with apa_table()."
+)
+
+
+```
+
+```{r S2anovatable, include=TRUE}
+
+apa_table(
+  defense_anova_results$table
+  , align = c("l", "r", "c", "r", "r", "r")
+  , caption = "Study 3: ANOVA table for the analyis of the example data set."
+
+)
+
+
+```
+
+```{r study2analysis, fig.cap="Study 3: Worldview Defense score depending on condition", include=TRUE}
+apa_factorial_plot(
+  data = df3
+  , id = "ID"
+  , dv = "Defense"
+  , factors = c("condition", "scenario")
+  , ylim = c(0, 7)
+  #, level = .34
+  #, las = 1
+  , ylab = "Worldview"
+  , plot = c("swarms", "lines", "error_bars", "points")
+)
+
+```
+
+
+## Dumbfounding/Threat
+
+The main effect for threat was observed again. There was no main effect for dumbfounded responding, and there was no interaction effect between dumbfounded responding and threat, on worldview defense.
+
+```{r S2descriptivetableprep2}
+
+defense <- df3 %>% group_by(condition,Dumbfounded) %>% summarise(descriptives(Defense))
+
+defense_anova <- 
+  aov_car(
+    Defense ~ Dumbfounded*condition + Error(ID)
+    , data = df3
+    , type = 3
+    
+  )
+
+defense_anova_results <- apa_print(defense_anova, es = "pes")
+
+```
+
+```{r S2descriptivetable2, include=TRUE}
+
+apa_table(
+  printnum(defense)
+  , align = c("l", "l", "c", "c", "c", "c", "c")
+  , caption = "Study 3: descriptive statistics for Worldview Defense by condition  and response to Critical Slide"
+#  , note = "This table was created with apa_table()."
+)
+
+
+```
+
+```{r S2anovatable2, include=TRUE}
+
+apa_table(
+  defense_anova_results$table
+  , align = c("l", "r", "c", "r", "r", "r")
+  , caption = "Study 3: ANOVA table for the analyis of the example data set."
+
+)
+
+
+```
+
+```{r study2analysis2, fig.cap="Study 3: Worldview Defense score depending on condition and response to Critical Slide", include=TRUE}
+apa_factorial_plot(
+  data = df3
+  , id = "ID"
+  , dv = "Defense"
+  , factors = c("Dumbfounded", "condition")
+  , ylim = c(0, 7)
+  #, level = .34
+  #, las = 1
+  , ylab = "Worldview"
+  , plot = c("swarms", "lines", "error_bars", "points")
+)
+
+```
+
+## Additional Analysis
+
+### Certainty
+
+#### Initially:
+
+- How certain are you about the judgement you have made?
+
+```{r}
+df3$conf1 <- 
+  replace_na(
+    recode(df3$certain1
+           , "1:\n\nNot certain at all" = 1
+           , "2" = 2
+           , "3" = 3
+           , "4" = 4
+           , "5" = 5
+           , "6" = 6
+           , "7:\nExtremely certain" = 7
+    )
+    , 0
+  )
+df3 <- df3[which(df3$conf1!=0),]
+
+con_table <- tapply(df3$conf1, df3$condition, descriptives)
+
+apa_table(`rownames<-`(rbind(con_table$control,con_table$threat), c("control","Dumbfounded")))
+
+apa_table(con_table$control)
+t <- t.test(df3$conf1~df3$condition)
+apa_print(t)
+
+
+t_apa <- apa_print(t)
+
+t_apa$full_result
+
+```
+
+```{r additionalanalysis, fig.cap="Study 3: Certainty score depending on condition", include=TRUE}
+apa_barplot(
+  data = df3
+  , id = "ID"
+  , factors = "condition"
+  , dv = "conf1"
+  , ylab = "Certainty"
+  , xlab = "Condition")
+```
+
+
+```{r descriptivestable, include=TRUE}
+
+apa_table(
+  `rownames<-`(rbind(con_table$control,con_table$threat), c("control","threat"))
+  , caption = "Descriptive statistics for Certainty Scores by Condition")
+
+```
+
+`r t_apa$full_result`
+
+<br> 
+
+<br>
+
+#### Revised:
+
+- How certain are you about the judgement you have made?
+
+```{r}
+df3$conf1 <-
+  replace_na(
+    recode(df3$certain2
+           , "1:\n\nNot certain at all" = 1
+           , "2" = 2
+           , "3" = 3
+           , "4" = 4
+           , "5" = 5
+           , "6" = 6
+           , "7:\nExtremely certain" = 7
+    )
+    , 0
+  )
+
+df3 <- df3[which(df3$conf1!=0),]
+
+con_table <- tapply(df3$conf1, df3$condition, descriptives)
+
+apa_table(`rownames<-`(rbind(con_table$control,con_table$threat), c("control","threat")))
+
+apa_table(con_table$control)
+t <- t.test(df3$conf1~df3$condition)
+apa_print(t)
+
+
+t_apa <- apa_print(t)
+
+t_apa$full_result
+
+```
+
+```{r additionalanalysis2, fig.cap="Study 3: Certainty score depending on condition", include=TRUE}
+apa_barplot(
+  data = df3
+  , id = "ID"
+  , factors = "condition"
+  , dv = "conf1"
+  , ylab = "Certainty"
+  , xlab = "Condition")
+```
+
+
+```{r descriptivestable2, include=TRUE}
+
+apa_table(
+  `rownames<-`(rbind(con_table$control,con_table$threat), c("control","threat"))
+  , caption = "Descriptive statistics for Certainty Scores by Condition")
+
+```
+
+`r t_apa$full_result`
+
+<br> 
+
+<br>
+
+### Dumbfounding and Defense
+
+```{r}
+
+df3$InCS_neat <- 
+  recode(df3$InCS
+                        , "It's wrong and I can provide a valid reason." = "Reasons"
+                        , "There is nothing wrong." = "Nothing Wrong"
+                        , "It's wrong but I can't think of a reason." = "Dumbfounded"
+                        )
+
+table(df3$InCS,df3$condition)
+
+con_table <- tapply(df3$Defense, df3$Dumbfounded, descriptives)
+
+
+a <- aov(Defense~Dumbfounded, df3)
+TukeyHSD(a)
+
+tuk <- TukeyHSD(a)
+apa_table(tuk$Dumbfounded)
+
+apa_a <- apa_print(a)
+
+df3$InCS_neat <- 
+  recode(df3$InCS
+                        , "It's wrong and I can provide a valid reason." = "Reasons"
+                        , "There is nothing wrong." = "Nothing Wrong"
+                        , "It's wrong but I can't think of a reason." = "Dumbfounded"
+                        )
+```
+
+
+```{r additionalanalysis3, fig.cap="Study 3: Defense score depending on response to Critical Slide", include=TRUE}
+apa_barplot(
+  data = df3
+  , id = "ID"
+  , factors = "Dumbfounded"
+  , dv = "Defense"
+  , ylab = "Defense"
+  , xlab = "Critical Slide")
+```
+
+
+```{r descriptivestable3, include=TRUE}
+
+apa_table(
+  `rownames<-`(rbind(con_table$Dumbfounded,con_table$Reasons,con_table$`Nothing Wrong`), c("Dumbfounded", "Reasons", "Nothing Wrong"))
+  , caption = "Descriptive statistics for Certainty Scores by Condition")
+
+```
+
+
+```{r descriptivestable4, include=TRUE}
+
+apa_table(
+  apa_a$table
+  , caption = "ANOVA table")
+
+```
+
+
+
+```{r descriptivestable5, include=TRUE}
+
+apa_table(
+  tuk$Dumbfounded
+  , caption = "Tukey's Pairwise comparisons")
+
+```
+
+<br>
+
+<br>
+
+### Dumbfounding and Scenario
+
+```{r prepS1fig2}
+
+#df3$condition <- df3$condition
+
+y <- table(df3$condition,df3$Dumbfounded)
+y <- as.data.frame(y)
+colnames(y) <- c("condition","InCS","Freq")
+
+z <- as.data.frame(table(df3$condition,df3$Dumbfounded)/length(df3$gender)*2)
+perc <- z$Freq
+test <- cbind(y,perc)
+test$condition
+
+
+ab_graph <- function(){
+  a <- df3[which(df3$condition==levels(as.factor(df3$condition))[1]),]
+  b <- df3[which(df3$condition==levels(as.factor(df3$condition))[2]),]
+  #levels(as.factor(df3$condition))[1]
+  
+  ay <- as.data.frame(table(a$Dumbfounded,a$condition))
+  by <- as.data.frame(table(b$Dumbfounded,b$condition))
+  
+  aperc <- ay$Freq/length(a$gender)
+  ay <- cbind(ay,aperc)
+  colnames(ay) <- c("InCS","condition","Freq","perc")
+  
+  bperc <- by$Freq/length(b$gender)
+  by <- cbind(by,bperc)
+  colnames(by) <- c("InCS","condition","Freq","perc")
+  
+  c <- rbind(ay,by)
+  
+  c
+}
+
+test <- ab_graph()
+
+rm(x,y)
+```
+
+```{r}
+library(scales)
+library(pwr)
+g <- 
+  ggplot(test, aes(x=InCS, y=perc, fill=factor(condition,labels=c("Paxman","Julie and Mark")))) +
+  scale_y_continuous(limits = c(-.03,1),
+                     labels = percent_format()
+  )+ 
+  geom_col(position = "dodge",
+           color="black",
+           size=.2
+  )+
+  geom_text(family = "Times", size=4.2,
+            aes( label = scales::percent(test$perc),
+                 y= perc ),
+            stat= "identity",
+            vjust = -.5,
+            position = position_dodge(.9),
+            fontface='plain'
+            )+
+  geom_text(family = "Times", size=4.2,
+            aes(label = format(Freq),
+                y= -3*(..count../100)/(..count..)),
+            stat= "count",
+            position = position_dodge(0.9),
+            #vjust = -.05,
+            fontface='plain'
+            ) +
+  xlab("Response to Critical Slide") +
+  ylab("Percentage of participants selecting each response")+
+  #scale_x_discrete(labels=c("Nothing Wrong", "Dumbfounded","Reasons")) +
+  scale_fill_grey(start = .5, end = .8) +
+  labs(fill="Condition") +
+  
+  geom_text(family = "Times", size=4.2,
+            aes( label = scales::percent(test$perc),
+                 y= test$perc ),
+            stat= "identity",
+            vjust = -.5,
+            position = position_dodge(.9),
+            fontface='plain'
+            )+
+  #theme_apa() +
+  theme_bw() +
+  theme(plot.title=element_text(family="Times",
+                                size=12
+                                ),
+        legend.text=element_text(family="Times",
+                                 size=8
+                                 ),
+          legend.title=element_text(family="Times",
+                                    size=10
+                                    ),
+          axis.text=element_text(family="Times",
+                                 colour = "black",
+                                 size=8
+                                 ),
+          axis.ticks.x = element_blank(),
+          axis.title=element_text(family="Times",
+                                  size=12
+                                  ),
+          strip.text=element_text(family = "Times",
+                                  size = 12
+                                  ),
+          strip.background = element_rect(fill = "white"),
+          legend.position="right")
+```
+ 
+
+```{r S1fig2criticalcondition, fig.cap="Study 1: Responses to critical slide and for the dumbfounding group (*N* = 95) and the control group (*N* = 76)", include=TRUE}
+
+
+suppressWarnings(print(g))
+
+
+
+
+```
+
+<br>
+```{r}
+c <- chisq.test(table(df3$InCS,df3$condition))
+w <- sqrt(c[]$statistic/length(df3$gender))
+pw <- pwr.chisq.test(w=w,N=length(df3$InCS),df=(3-1),sig.level = .05)
+
+```
+
+A chi-squared test for independence revealed no significant association between experimental condition and response to the critical slide, $\chi$^2^(`r c$parameter`, *N* = `r length(df3$InCs)`) = `r round(c$statistic, digits=3)`, *p* `r paste(p_report(c$p.value))`, *V* = `r round(w, digits=2)`, the observed power was `r round(pw$power, digits=2)`.
+<br>
+
+<br>
+
+\newpage
+
+\vfill
+
+
+\newpage
+
+\vfill
+
+\newpage
+
+\vfill
+
+
+\newpage
+
+
+
+
+
+
+
+
+
+```{r R_citations, include=FALSE}
+
+r_refs(file = "r-references.bib")
+my_citation <- cite_r(file = "r-references.bib")
+my_citation
+```
+
+# Data Accessibility Statement
+All participant data, and analysis scripts, along with the pre-registered methods and hypotheses, will be available this paper’s project page on the Open Science Framework at [https://osf.io/ubmvs/](https://osf.io/ubmvs/).
+
+All statistical analysis was conducted using `r my_citation`.
+
+
+```{r create_r-references}
+r_refs(file = "r-references.bib")
+```
+
+
+\newpage
+
+\vfill
+
+
+\newpage
+
+\vfill
+
+\newpage
+
+\vfill
+
+
+\newpage
+
+### Other measures
+### Need for Closure Scale (Kruglanski, Atash, De Grada, Mannetti, & Pierro, 2013)
+
+1 = strongly disagree; 2 = moderately disagree; 3 = slightly disagree; 4 = slightly agree; 5 = moderately agree; 6 = strongly agree
+
+1. I think that having clear rules and order at work is essential for success.
+2. Even after I've made up my mind about something, I am always eager to consider a different opinion.
+3. I don't like situations that are uncertain.
+4. I dislike questions which could be answered in many different ways.
+5. I like to have friends who are unpredictable.
+6. I find that a well ordered life with regular hours suits my temperament.
+7. I enjoy the uncertainty of going into a new situation without knowing what might happen.
+8. When dining out, I like to go to places where I have been before so that I know what to expect.
+9. I feel uncomfortable when I don't understand the reason why an event occurred in my life.
+10. I feel irritated when one person disagrees with what everyone else in a group believes.
+11. I hate to change my plans at the last minute.
+12. I would describe myself as indecisive.
+13. When I go shopping, I have difficulty deciding exactly what it is I want.
+14. When faced with a problem I usually see the one best solution very quickly
+15. When I am confused about an important issue, I feel very upset.
+16. I tend to put off making important decisions until the last possible moment.
+17. I usually make important decisions quickly and confidently.
+18. I have never been late for an appointment or work.
+19. I think it is fun to change my plans at the last moment.
+20. My personal space is usually messy and disorganized.
+21. In most social conflicts, I can easily see which side is right and which is wrong.
+22. I have never known someone I did not like.
+23. I tend to struggle with most decisions.
+24. I believe orderliness and organization are among the most important characteristics of a good student.
+25. When considering most conflict situations, I can usually see how both sides could be right.
+26. I don't like to be with people who are capable of unexpected actions.
+27. I prefer to socialize with familiar friends because I know what to expect from them.
+28. I think that I would learn best in a class that lacks clearly stated objectives and requirements.
+29. When thinking about a problem, I consider as many different opinions on the issue as possible.
+30. I don't like to go into a situation without knowing what I can expect from it.
+31. I like to know what people are thinking all the time.
+32. I dislike it when a person's statement could mean many different things.
+33. It's annoying to listen to someone who cannot seem to make up his or her mind.
+34. I find that establishing a consistent routine enables me to enjoy life more.
+35. I enjoy having a clear and structured mode of life.
+36. I prefer interacting with people whose opinions are very different from my own.
+37. I like to have a plan for everything and a place for everything.
+38. I feel uncomfortable when someone's meaning or intention is unclear to me.
+39. I believe that one should never engage in leisure activities.
+40. When trying to solve a problem I often see so many possible options that it's confusing.
+41. I always see many possible solutions to problems I face.
+42. I'd rather know bad news than stay in a state of uncertainty.
+43. I feel that there is no such thing as an honest mistake.
+44. I do not usually consult many different options before forming my own view.
+45. I dislike unpredictable situations.
+46. I have never hurt another person's feelings.
+47. I dislike the routine aspects of my work (studies).
+
+### Self Esteem Scale (Rosenberg, 1965)
+1 = Strongly agree, 2 = Agree, 3 = Disagree, 4 = Strongly disagree
+1. I feel that I’m a person of worth, at least on an equal plane with others.
+2. I feel that I have a number of good qualities
+3. All in all, I am inclined to feel that I am a failure**
+4. I am able to do things as well as most other people.
+5. I feel I do not have much to be proud of**
+6. I take a positive attitude towards myself.
+7. On the whole, I am satisfied with myself
+8. I wish I could have more respect for myself**
+9. I certainly feel useless at times.
+10. At times I think I am no good at all.
+
+
+# References
+
+
+
